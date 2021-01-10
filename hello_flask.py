@@ -3,8 +3,11 @@ from flask import abort  #处理错误
 from flask import redirect #重定向
 from flask_script import Manager
 from flask import Flask, render_template #Jinja2模板引擎
+from flask_bootstrap import Bootstrap  #3b版本使用Flask-Bootstrap集成Twitter Bootstrap
+
 
 app = Flask(__name__)
+bootstrap = Bootstrap(app)
 
 # 代码示例 route() 装饰器把一个函数绑定到对应的 URL 上。
 # @app.route('/')
@@ -42,6 +45,16 @@ def index():
 @app.route('/user/<name>')
 def user(name):
     return render_template('user.html', name=name)
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404   #客户端请求未知页面或路由时
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html'), 500   #有未处理的异常时
+
+
+
 
 if __name__ == "__main__":
     app.debug = True
