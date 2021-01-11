@@ -4,7 +4,6 @@
     <list default="true" id="af357e86-4055-4811-a15a-bf6629ab1b9d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hello_flask.py" beforeDir="false" afterPath="$PROJECT_DIR$/hello_flask.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -125,6 +124,7 @@
       <workItem from="1610336640014" duration="299000" />
       <workItem from="1610337193856" duration="8631000" />
       <workItem from="1610406478490" duration="60000" />
+      <workItem from="1610406556594" duration="1218000" />
     </task>
     <servers />
   </component>
@@ -132,25 +132,25 @@
     <option name="version" value="2" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1767" height="404" key="GridCell.Tab.0.bottom" timestamp="1610371640406">
+    <state width="1466" height="404" key="GridCell.Tab.0.bottom" timestamp="1610407749785">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1767" height="404" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1610371640406" />
-    <state width="1767" height="404" key="GridCell.Tab.0.center" timestamp="1610371640406">
+    <state width="1466" height="404" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1610407749785" />
+    <state width="1466" height="404" key="GridCell.Tab.0.center" timestamp="1610407749784">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1767" height="404" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1610371640406" />
-    <state width="1767" height="404" key="GridCell.Tab.0.left" timestamp="1610371640406">
+    <state width="1466" height="404" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1610407749784" />
+    <state width="1466" height="404" key="GridCell.Tab.0.left" timestamp="1610407749783">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1767" height="404" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1610371640406" />
-    <state width="1767" height="404" key="GridCell.Tab.0.right" timestamp="1610371640406">
+    <state width="1466" height="404" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1610407749783" />
+    <state width="1466" height="404" key="GridCell.Tab.0.right" timestamp="1610407749785">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1767" height="404" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1610371640406" />
+    <state width="1466" height="404" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1610407749785" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/untitled2$hello_flask.coverage" NAME="hello_flask Coverage Results" MODIFIED="1610368608617" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/untitled2$hello_flask.coverage" NAME="hello_flask Coverage Results" MODIFIED="1610407749724" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/untitled2$oo.coverage" NAME="oo Coverage Results" MODIFIED="1610202759863" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

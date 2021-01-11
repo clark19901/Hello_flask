@@ -1,4 +1,3 @@
-
 from flask import abort  #处理错误
 from flask import redirect #重定向
 from flask_script import Manager  #可以使用命令行参数运行程序
@@ -6,7 +5,9 @@ from flask import Flask, render_template #Jinja2模板引擎
 from flask_bootstrap import Bootstrap  #3b版本使用Flask-Bootstrap集成Twitter Bootstrap
 from flask_moment import Moment   #使用Flask-Moment本地化日期和时间
 from datetime import datetime
-
+from flask import session,url_for
+# url_for 函数使用URL 映射生成URL，从而保证URL 和定义的路由兼容，而且修改路由名字后
+# 依然可用。
 from flask_wtf import Form
 from wtforms import StringField, SubmitField
 from wtforms.validators import Required
@@ -54,13 +55,12 @@ def redi():
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    name = None
-
     form = NameForm()
     if form.validate_on_submit():
-        name = form.name.data
-    form.name.data = ''
-    return render_template('index.html', form=form, name=name,current_time= datetime.utcnow())
+        session['name'] = form.name.data
+        return  redirect(url_for('index'))    #url_for唯一必须指定的参数是端点,即相应视图函数的名字
+    return render_template('index.html', form=form,
+                           name=session.get('name'),current_time= datetime.utcnow())
 
 # 添加了一个动态路由。访问这个地址时，你会看到一则针对个人的欢迎消息。
 
