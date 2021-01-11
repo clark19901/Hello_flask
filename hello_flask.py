@@ -1,13 +1,15 @@
 
 from flask import abort  #处理错误
 from flask import redirect #重定向
-from flask_script import Manager
+from flask_script import Manager  #可以使用命令行参数运行程序
 from flask import Flask, render_template #Jinja2模板引擎
 from flask_bootstrap import Bootstrap  #3b版本使用Flask-Bootstrap集成Twitter Bootstrap
-
+from flask_moment import Moment   #使用Flask-Moment本地化日期和时间
+from datetime import datetime
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
+moment = Moment(app)
 
 # 代码示例 route() 装饰器把一个函数绑定到对应的 URL 上。
 # @app.route('/')
@@ -33,7 +35,7 @@ def redi():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html',current_time=datetime.utcnow())
 
 # 添加了一个动态路由。访问这个地址时，你会看到一则针对个人的欢迎消息。
 

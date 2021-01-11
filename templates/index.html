@@ -1,14 +1,20 @@
 {% extends "base.html" %}
+{% block scripts %}
+{{ super() }}
+{{ moment.include_moment() }}   
+{{ moment.lang('zh-CN') }}    
+{% endblock %}
 {% block title %}Index{% endblock %}
 {% block head %}
 {{ super() }}
 <style>
 </style>
 {% endblock %}
-{% block body %}
+{% block page_content %}
+<div class = "page-header">
 <h1>Hello, World!</h1>
-<link rel="shortcut icon" href="{{ url_for('static', filename = 'favicon.ico') }}"
-type="image/x-icon">
-<link rel="icon" href="{{ url_for('static', filename = 'favicon.ico') }}"
-type="image/x-icon">
+<p> 当地时间是{{ moment(current_time).format('LLL') }}.</p>
+<p>这是在{{ moment(current_time).fromNow(refresh=True) }}</p>
+<p>{{current_time}}<p>
+</div>
 {% endblock %}
