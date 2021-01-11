@@ -7,9 +7,28 @@ from flask_bootstrap import Bootstrap  #3b版本使用Flask-Bootstrap集成Twitt
 from flask_moment import Moment   #使用Flask-Moment本地化日期和时间
 from datetime import datetime
 
+from flask_wtf import Form
+from wtforms import StringField, SubmitField
+from wtforms.validators import Required
+#，Flask-WTF 能保护所有表单免受跨站请求伪造（Cross-Site Request Forgery，
+# CSRF）的攻击。恶意网站把请求发送到被攻击者已登录的其他网站时就会引发CSRF 攻击。
+
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
 moment = Moment(app)
+app.config['SECRET_KEY'] = 'hard to guess string'
+# 实现CSRF 保护，Flask-WTF 需要程序设置一个密钥。Flask-WTF 使用这个密钥生成
+# 加密令牌，再用令牌验证请求中表单数据的真伪
+
+# <h1>Hello, World!</h1>
+# <p> 当地时间是{{ moment(current_time).format('LLL') }}.</p>
+# <p>这是在{{ moment(current_time).fromNow(refresh=True) }}</p>
+# <p>{{current_time}}<p>
+
+class NameForm(Form):
+    name = StringField('What is your name?', validators=[Required()])
+    submit = SubmitField('Submit')
+
 
 # 代码示例 route() 装饰器把一个函数绑定到对应的 URL 上。
 # @app.route('/')
@@ -33,9 +52,15 @@ def redi():
 #     return '<h1>Hello, %s</h1>' % user.name
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html',current_time=datetime.utcnow())
+    name = None
+
+    form = NameForm()
+    if form.validate_on_submit():
+        name = form.name.data
+    form.name.data = ''
+    return render_template('index.html', form=form, name=name,current_time= datetime.utcnow())
 
 # 添加了一个动态路由。访问这个地址时，你会看到一则针对个人的欢迎消息。
 
