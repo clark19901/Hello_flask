@@ -16,6 +16,8 @@ from wtforms.validators import Required
 from flask import flash
 import  os
 from flask_sqlalchemy import SQLAlchemy
+from flask_script import Shell  #让Flask-Script 的shell 命令自动导入特定的对象。区分Shell 大小写
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
@@ -44,6 +46,10 @@ class User(db.Model):
 bootstrap = Bootstrap(app)
 moment = Moment(app)
 manager = Manager(app)
+def make_shell_context():
+    return dict(app=app, db=db, User=User, Role=Role)
+manager.add_command("shell", Shell(make_context=make_shell_context))
+
 app.config['SECRET_KEY'] = 'hard to guess string'
 # 实现CSRF 保护，Flask-WTF 需要程序设置一个密钥。Flask-WTF 使用这个密钥生成
 # 加密令牌，再用令牌验证请求中表单数据的真伪
@@ -124,5 +130,5 @@ def internal_server_error(e):
 if __name__ == "__main__":
     app.debug = True
     # 启用了调试支持，服务器会在代码修改后自动重新载入 ，并在发生错误时提供一个相当有用的调试器 。
-    app.run()  #host='192.168.0.100'
-    # manager.run()
+    # app.run()  #host='192.168.0.100'
+    manager.run()

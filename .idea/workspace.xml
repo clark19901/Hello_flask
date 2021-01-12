@@ -4,8 +4,6 @@
     <list default="true" id="af357e86-4055-4811-a15a-bf6629ab1b9d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hello_flask.py" beforeDir="false" afterPath="$PROJECT_DIR$/hello_flask.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,7 +124,7 @@
       <workItem from="1610336640014" duration="299000" />
       <workItem from="1610337193856" duration="8631000" />
       <workItem from="1610406478490" duration="60000" />
-      <workItem from="1610406556594" duration="7330000" />
+      <workItem from="1610406556594" duration="8319000" />
     </task>
     <servers />
   </component>
