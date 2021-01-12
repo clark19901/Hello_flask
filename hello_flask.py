@@ -13,6 +13,7 @@ from wtforms import StringField, SubmitField
 from wtforms.validators import Required
 #，Flask-WTF 能保护所有表单免受跨站请求伪造（Cross-Site Request Forgery，
 # CSRF）的攻击。恶意网站把请求发送到被攻击者已登录的其他网站时就会引发CSRF 攻击。
+from flask import flash
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
@@ -57,6 +58,9 @@ def redi():
 def index():
     form = NameForm()
     if form.validate_on_submit():
+        old_name = session.get('name')   #声明一个旧名提取自对话记录
+        if old_name is not None and old_name != form.name.data:   #如果旧名和表单提交名不一样
+            flash('Looks like you have changed your name!')       #需要同时在模板中渲染flash消息
         session['name'] = form.name.data
         return  redirect(url_for('index'))    #url_for唯一必须指定的参数是端点,即相应视图函数的名字
     return render_template('index.html', form=form,
