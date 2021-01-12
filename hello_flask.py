@@ -18,7 +18,9 @@ import  os
 from flask_sqlalchemy import SQLAlchemy
 from flask_script import Shell  #让Flask-Script 的shell 命令自动导入特定的对象。区分Shell 大小写
 from flask_migrate import Migrate, MigrateCommand #使用Flask-Migrate实现数据库迁移
-
+from flask_mail import Mail
+from flask_mail import Message
+from info import USERNAME, PASSWORD
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -44,6 +46,24 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r>' % self.username
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id')) #添加到User 模型中的role_id 列被定义为外键
+
+
+app.config['MAIL_SERVER'] = 'smtp.qq.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USERNAME'] = USERNAME
+app.config['MAIL_PASSWORD'] = PASSWORD
+
+app.config['FLASKY_MAIL_SUBJECT_PREFIX'] = '[Flasky]'
+app.config['FLASKY_MAIL_SENDER'] = 'clark1990@foxmail.com'
+app.config['FLASKY_ADMIN'] = USERNAME
+mail = Mail(app)
+def send_email(to, subject, template, **kwargs):
+    msg = Message(app.config['FLASKY_MAIL_SUBJECT_PREFIX'] + subject,
+                  sender=app.config['FLASKY_MAIL_SENDER'], recipients=[to])
+    msg.body = render_template(template + '.txt', **kwargs)
+    msg.html = render_template(template + '.html', **kwargs)
+    mail.send(msg)
 
 bootstrap = Bootstrap(app)
 moment = Moment(app)
@@ -90,7 +110,6 @@ def redi():
 #         abort(404)
 #     return '<h1>Hello, %s</h1>' % user.name
 
-
 @app.route('/', methods=['GET', 'POST'])
 def index():
     form = NameForm()
@@ -100,16 +119,35 @@ def index():
             user = User(username=form.name.data)
             db.session.add(user)
             session['known'] = False
+            if app.config['FLASKY_ADMIN']:
+                send_email(app.config['FLASKY_ADMIN'], 'New User',
+                           'mail/new_user', user=user)
         else:
             session['known'] = True
         session['name'] = form.name.data
         form.name.data = ''
-        old_name = session.get('name')   #声明一个旧名提取自对话记录
-        if old_name is not None and old_name != form.name.data:   #如果旧名和表单提交名不一样
-            flash('Looks like you have changed your name!')       #需要同时在模板中渲染flash消息
-        return  redirect(url_for('index'))    #url_for唯一必须指定的参数是端点,即相应视图函数的名字
-    return render_template('index.html', form=form,known=session.get('known', False),
-                           name=session.get('name'),current_time= datetime.utcnow())
+        return redirect(url_for('index'))
+    return render_template('index.html', form=form, name=session.get('name'),
+                           known=session.get('known', False),current_time= datetime.utcnow())
+# @app.route('/', methods=['GET', 'POST'])
+# def index():
+#     form = NameForm()
+#     if form.validate_on_submit():
+#         user = User.query.filter_by(username=form.name.data).first()
+#         if user is None:
+#             user = User(username=form.name.data)
+#             db.session.add(user)
+#             session['known'] = False
+#         else:
+#             session['known'] = True
+#         session['name'] = form.name.data
+#         form.name.data = ''
+#         old_name = session.get('name')   #声明一个旧名提取自对话记录
+#         if old_name is not None and old_name != form.name.data:   #如果旧名和表单提交名不一样
+#             flash('Looks like you have changed your name!')       #需要同时在模板中渲染flash消息
+#         return  redirect(url_for('index'))    #url_for唯一必须指定的参数是端点,即相应视图函数的名字
+#     return render_template('index.html', form=form,known=session.get('known', False),
+#                            name=session.get('name'),current_time= datetime.utcnow())
 
 # 添加了一个动态路由。访问这个地址时，你会看到一则针对个人的欢迎消息。
 
@@ -135,5 +173,5 @@ def internal_server_error(e):
 if __name__ == "__main__":
     app.debug = True
     # 启用了调试支持，服务器会在代码修改后自动重新载入 ，并在发生错误时提供一个相当有用的调试器 。
-    # app.run()  #host='192.168.0.100'
-    manager.run()
+    app.run()  #host='192.168.0.100'
+    # manager.run()
