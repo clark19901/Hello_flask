@@ -21,6 +21,7 @@ from flask_migrate import Migrate, MigrateCommand #使用Flask-Migrate实现数�
 from flask_mail import Mail
 from flask_mail import Message
 from info import USERNAME, PASSWORD
+from threading import Thread
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -58,12 +59,19 @@ app.config['FLASKY_MAIL_SUBJECT_PREFIX'] = '[Flasky]'
 app.config['FLASKY_MAIL_SENDER'] = 'clark1990@foxmail.com'
 app.config['FLASKY_ADMIN'] = USERNAME
 mail = Mail(app)
+
 def send_email(to, subject, template, **kwargs):
     msg = Message(app.config['FLASKY_MAIL_SUBJECT_PREFIX'] + subject,
                   sender=app.config['FLASKY_MAIL_SENDER'], recipients=[to])
     msg.body = render_template(template + '.txt', **kwargs)
     msg.html = render_template(template + '.html', **kwargs)
-    mail.send(msg)
+    thr = Thread(target=send_async_email, args=[app, msg])   #使用后台线程异步发送电子邮件，避免处理请求过程中不必要的延迟
+    thr.start()
+    return thr
+
+def send_async_email(app, msg):
+    with app.app_context():
+        mail.send(msg)
 
 bootstrap = Bootstrap(app)
 moment = Moment(app)
