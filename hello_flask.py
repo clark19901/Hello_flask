@@ -14,8 +14,33 @@ from wtforms.validators import Required
 #，Flask-WTF 能保护所有表单免受跨站请求伪造（Cross-Site Request Forgery，
 # CSRF）的攻击。恶意网站把请求发送到被攻击者已登录的其他网站时就会引发CSRF 攻击。
 from flask import flash
+import  os
+from flask_sqlalchemy import SQLAlchemy
+basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
+
+app.config['SQLALCHEMY_DATABASE_URI'] =\
+'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
+db = SQLAlchemy(app)
+#配置数据库
+class Role(db.Model):
+    __tablename__ = 'roles'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True)
+    def __repr__(self):
+        return '<Role %r>' % self.name
+    users = db.relationship('User', backref='role')
+
+class User(db.Model):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(64), unique=True, index=True)
+    def __repr__(self):
+        return '<User %r>' % self.username
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id')) #添加到User 模型中的role_id 列被定义为外键
+
 bootstrap = Bootstrap(app)
 moment = Moment(app)
 app.config['SECRET_KEY'] = 'hard to guess string'
