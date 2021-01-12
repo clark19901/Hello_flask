@@ -1,6 +1,6 @@
 from flask import abort  #处理错误
 from flask import redirect #重定向
-from flask_script import Manager  #可以使用命令行参数运行程序
+from flask_script import Manager  #可以在运行时使用命令行
 from flask import Flask, render_template #Jinja2模板引擎
 from flask_bootstrap import Bootstrap  #3b版本使用Flask-Bootstrap集成Twitter Bootstrap
 from flask_moment import Moment   #使用Flask-Moment本地化日期和时间
@@ -43,6 +43,7 @@ class User(db.Model):
 
 bootstrap = Bootstrap(app)
 moment = Moment(app)
+manager = Manager(app)
 app.config['SECRET_KEY'] = 'hard to guess string'
 # 实现CSRF 保护，Flask-WTF 需要程序设置一个密钥。Flask-WTF 使用这个密钥生成
 # 加密令牌，再用令牌验证请求中表单数据的真伪
@@ -83,12 +84,20 @@ def redi():
 def index():
     form = NameForm()
     if form.validate_on_submit():
+        user = User.query.filter_by(username=form.name.data).first()
+        if user is None:
+            user = User(username=form.name.data)
+            db.session.add(user)
+            session['known'] = False
+        else:
+            session['known'] = True
+        session['name'] = form.name.data
+        form.name.data = ''
         old_name = session.get('name')   #声明一个旧名提取自对话记录
         if old_name is not None and old_name != form.name.data:   #如果旧名和表单提交名不一样
             flash('Looks like you have changed your name!')       #需要同时在模板中渲染flash消息
-        session['name'] = form.name.data
         return  redirect(url_for('index'))    #url_for唯一必须指定的参数是端点,即相应视图函数的名字
-    return render_template('index.html', form=form,
+    return render_template('index.html', form=form,known=session.get('known', False),
                            name=session.get('name'),current_time= datetime.utcnow())
 
 # 添加了一个动态路由。访问这个地址时，你会看到一则针对个人的欢迎消息。
@@ -115,4 +124,5 @@ def internal_server_error(e):
 if __name__ == "__main__":
     app.debug = True
     # 启用了调试支持，服务器会在代码修改后自动重新载入 ，并在发生错误时提供一个相当有用的调试器 。
-    app.run(host='192.168.0.100')
+    app.run()  #host='192.168.0.100'
+    # manager.run()
